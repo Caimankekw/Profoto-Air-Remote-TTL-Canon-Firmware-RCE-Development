@@ -1,0 +1,2 @@
+# Python >= 3.9. All main-branch inspection tools and tests use the standard library.
+# No pip packages, firmware compiler or Windows packaging tools are required.

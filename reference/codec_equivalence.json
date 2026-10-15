@@ -1,0 +1,41 @@
+{
+  "status": "PASS_EXACT_CAPTURE_CODEC_EQUIVALENCE",
+  "offline_only": true,
+  "device_accessed": false,
+  "new_table_sha256": "7779d34181f9d302d2d122e9a2ed40f975a4128b738a40561f97fc86ac949303",
+  "new_codec_sha256": "1cec5771dbf0f8430170bed9f17c8cd14045954f0b9c19c98373c9178ac37bcf",
+  "new_tests_sha256": "7e991909f5a2d5fcb31d93e8b5274814bf43f1ef36558922ac410c4c17af386b",
+  "old_codec_sha256": "8422f0e035ddb2b91a2cb898192f96b462310fe694d87bf5442f5d521b4625e9",
+  "compared_absolute_range": [
+    16386,
+    65536
+  ],
+  "address_count": 49150,
+  "every_address_xor_key_equal": true,
+  "every_address_four_bit_mask_equal": true,
+  "all_value_mask_primitive_pairs_equal": 4096,
+  "all_possible_byte_values_equivalent_at_every_address_by_parameter_and_primitive_equality": true,
+  "varied_pattern_encode_all_addresses_equal": true,
+  "official_transport_decode_all_addresses_equal": true,
+  "official_transport_reencode_identical": true,
+  "official_hex_sha256": "fc61cbd275e075acab29e6df356ed0b05f731901e3ab16f303f920b237dc451e",
+  "official_plain_sha256": "7f2b7ef2625bacebafc526d0623ae91faa1f544e6062f2d4171635ed087f072a",
+  "known_mask_sha256": "81fe4da4f8a15728c97bc6de35fae71572d44f39a927dce22a9ca300b5d2558b",
+  "unknown_first_word": [
+    16384,
+    16386
+  ],
+  "original_fill_tail": [
+    65536,
+    130048
+  ],
+  "tail_reconstructed_only_after_full_original_opaque_pin": true,
+  "exported_raw_capture": false,
+  "exported_device_identity": false,
+  "exported_vendor_plaintext": false,
+  "notes": [
+    "No modified executable or firmware was built during this equivalence audit.",
+    "The compact parameter table has no absolute host paths or capture transaction metadata.",
+    "The arbitrary-value equivalence follows from exact equality of the key and mask at all 49150 addresses and complete equality of the swap primitive for all 4096 input/mask pairs."
+  ]
+}

@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+build/
+dist/
+inputs/*
+!inputs/README.md
+!inputs/README.zh-CN.md
+*.exe
+*.hex
+*.zip
+*.partial.bin

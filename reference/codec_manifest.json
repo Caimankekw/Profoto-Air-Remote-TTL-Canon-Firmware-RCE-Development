@@ -1,0 +1,27 @@
+{
+  "format": "c11-offset-transform-v1",
+  "file": "c11_offset_transform.bin",
+  "start": 16386,
+  "end_exclusive": 65536,
+  "key_bytes": 49150,
+  "packed_mask_bytes": 24575,
+  "packed_mask_order": "first-address-in-low-nibble",
+  "size": 73725,
+  "sha256": "7779d34181f9d302d2d122e9a2ed40f975a4128b738a40561f97fc86ac949303",
+  "developer": "Caimankekw",
+  "source_kind": "derived protocol byte-transform parameters",
+  "derivation": {
+    "fill_byte": 255,
+    "direction": 244,
+    "source_codec_sha256": "8422f0e035ddb2b91a2cb898192f96b462310fe694d87bf5442f5d521b4625e9",
+    "constant_reference_sha256": "1a763de0dee3d70e7a365571c5f7c54d24aec52779bdfee60efbe9e3985e39e2",
+    "pair_reference_sha256": "dfd2bfd3aae0eb25a409da3c7d6a72922b3d570e9e2efeb39e974e6721e2bf5f",
+    "raw_capture_or_device_identity_included": false,
+    "vendor_plaintext_included": false
+  },
+  "limits": [
+    "Only the pinned C11 format and captured stream positions are supported.",
+    "First application word and positions at or above 0x10000 are not generically encodable.",
+    "No USB, device backup, credential, firmware image, or original executable is included in this table."
+  ]
+}
