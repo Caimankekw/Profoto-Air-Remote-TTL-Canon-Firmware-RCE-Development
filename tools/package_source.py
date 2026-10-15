@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PREFIX = 'AirRemote_TTL_C_AIR2_P8_FIX1'
 NAME = 'Profoto-AirRemote-TTL-C-AIR2-P8-FIX1-Source.zip'
 EXCLUDED = {'.git', '.venv', '__pycache__', 'build', 'dist', '.tmp', '.pytest_cache'}
-SUFFIXES = {'.py', '.md', '.txt', '.json', '.c', '.h', '.nsi', '.bin'}
+SUFFIXES = {'.py', '.md', '.txt', '.json', '.c', '.h', '.nsi', '.bin', '.yml', '.yaml'}
 REQUIRED = {'build.py', 'README.md', 'README.zh-CN.md', 'LICENSE', 'NOTICE.md',
             'DISCLAIMER.md', 'DISCLAIMER.zh-CN.md', 'NOTICE.zh-CN.md',
             'CHANGELOG.md', 'CHANGELOG.zh-CN.md', 'source/ui_patch.py',
@@ -61,6 +61,7 @@ def inventory():
 def source_manifest(files):
     return {
         'format': 'airremote-air2-source-v1', 'name': 'AIR2-P8-FIX1', 'developer': 'Caimankekw',
+        'packaging_tag': json.loads(files['macos/model.json'])['packaging_tag'] if 'macos/model.json' in files else None,
         'license': 'AGPL-3.0-only; authored material only; see NOTICE.md',
         'release_tag': 'p8-fix1-20261016', 'release_date': '2026-10-16',
         'hardware_validated': False,

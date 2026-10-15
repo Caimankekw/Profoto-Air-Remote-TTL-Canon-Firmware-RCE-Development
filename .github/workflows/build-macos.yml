@@ -1,0 +1,60 @@
+name: Build reviewed macOS package
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_asset:
+        description: Exact corresponding-source ZIP asset on the profile's Mac release
+        required: true
+        type: string
+      source_sha256:
+        description: Independently verified SHA256 of that complete source ZIP
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  native-package:
+    runs-on: macos-15-intel
+    timeout-minutes: 25
+    steps:
+      - name: Check out the selected immutable packaging tag
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify parser and packaging invariants
+        run: python3 -B -m unittest discover -s macos -p 'test_*.py' -v
+      - name: Download and verify exact release inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_ASSET: ${{ inputs.source_asset }}
+          SOURCE_SHA256: ${{ inputs.source_sha256 }}
+        run: |
+          python3 -B macos/fetch_inputs.py \
+            --source-asset "$SOURCE_ASSET" \
+            --source-sha256 "$SOURCE_SHA256" \
+            --directory "$RUNNER_TEMP/mac-inputs-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" \
+            --github-env "$GITHUB_ENV"
+      - name: Build and independently read back the native DMG
+        env:
+          SOURCE_SHA256: ${{ inputs.source_sha256 }}
+        run: |
+          python3 -B macos/build_package.py \
+            --stock-maczip "$STOCK_MACZIP" \
+            --windows-package "$WINDOWS_PACKAGE" \
+            --source-archive "$SOURCE_ARCHIVE" \
+            --source-sha256 "$SOURCE_SHA256" \
+            --source-commit "$GITHUB_SHA" \
+            --output "$RUNNER_TEMP/mac-build-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+      - name: Upload build outputs for independent release review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: macos-${{ github.sha }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            ${{ runner.temp }}/mac-build-${{ github.run_id }}-${{ github.run_attempt }}/*.zip
+            ${{ runner.temp }}/mac-build-${{ github.run_id }}-${{ github.run_attempt }}/build_summary.json
+            ${{ runner.temp }}/mac-build-${{ github.run_id }}-${{ github.run_attempt }}/release/

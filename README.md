@@ -88,3 +88,9 @@ PIC18 replay uses bounded clock, UART, Flash and LCD models. These checks do not
 After a manual update, check AIR1 expiry in MAN and TTL DEF, persistent AIR2 digits, five plus taps adding 0.5 and five minus taps restoring it, both chords leaving Head/Model switches unchanged, and settings/mode surviving reboot. Check the display and actual light behavior separately. The original recovery GUI does not guarantee recovery.
 
 Read the [disclaimer](DISCLAIMER.md), [license scope](NOTICE.md) and [LICENSE](LICENSE) before use. AGPL-3.0-only covers the developer's original work; it does not wholly relicense vendor firmware, the updater or mixed binaries.
+
+## macOS packages
+
+Native Mac packaging instructions and build source are in [macos/README.md](macos/README.md). The Mac package retains the vendor GUI and USB helper, embeds the exact existing Windows firmware HEX, and rebuilds the outer application seal with an ad-hoc signature before creating an APFS/UDZO DMG. It has no vendor Developer ID signature or Apple notarization. The GUI is Intel x86_64; Apple Silicon requires Rosetta. Hardware flashing has not been verified on macOS.
+
+Mac packaging source is identified by `p8-fix1-20261016-mac`; the original firmware release tag and Windows attachments remain unchanged. The new Mac source archive includes the complete firmware and packaging sources. See the dedicated Mac instructions and verification assets in the existing release.

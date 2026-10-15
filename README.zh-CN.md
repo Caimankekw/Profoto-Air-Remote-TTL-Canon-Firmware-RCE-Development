@@ -88,3 +88,9 @@ PIC18 回放中的时钟、UART、Flash 和 LCD 为有边界的模型。这些�
 手动更新后，请检查 MAN 与 TTL DEF 中 AIR1 数字到期隐藏、AIR2 数字常驻、五次加号增加 0.5 且五次减号恢复、两个组合键不误改闪光／造型灯开关，以及重启后模式和设置保留。显示是否正确与灯具实际行为需分别检查。原厂恢复 GUI 不保证故障后可恢复。
 
 使用前阅读[免责声明](DISCLAIMER.zh-CN.md)、[许可范围](NOTICE.zh-CN.md)和 [LICENSE](LICENSE)。AGPL-3.0-only 仅适用于开发者的原创范围，不将原厂固件、更新器或混合二进制整体重新许可。
+
+## macOS 更新包
+
+原生 Mac 封包说明与源码见 [macos/README.zh-CN.md](macos/README.zh-CN.md)。Mac 包保留原厂 GUI 与 USB 加载器，置入与现有 Windows 版完全相同的固件 HEX，以 ad-hoc 签名重建外层应用资源密封，再生成 APFS/UDZO DMG。它不具备原厂 Developer ID 签名或 Apple 公证。GUI 为 Intel x86_64，Apple Silicon 需要 Rosetta；尚未验证 macOS 实机刷写。
+
+Mac 封包源码标签为 `p8-fix1-20261016-mac`；原固件发布标签和 Windows 附件保持不变。新 Mac 源码包包含完整固件及封包源码。请查看现有 Release 中专属 Mac 使用说明和验证附件。
