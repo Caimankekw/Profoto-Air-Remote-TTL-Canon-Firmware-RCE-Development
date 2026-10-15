@@ -9,14 +9,18 @@ from pathlib import Path, PurePosixPath
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-PREFIX = 'AirRemote_TTL_C_AIR2_P8'
-NAME = 'Profoto-AirRemote-TTL-C-AIR2-P8-Source.zip'
+PREFIX = 'AirRemote_TTL_C_AIR2_P8_FIX1'
+NAME = 'Profoto-AirRemote-TTL-C-AIR2-P8-FIX1-Source.zip'
 EXCLUDED = {'.git', '.venv', '__pycache__', 'build', 'dist', '.tmp', '.pytest_cache'}
 SUFFIXES = {'.py', '.md', '.txt', '.json', '.c', '.h', '.nsi', '.bin'}
 REQUIRED = {'build.py', 'README.md', 'README.zh-CN.md', 'LICENSE', 'NOTICE.md',
-            'DISCLAIMER.md', 'DISCLAIMER.zh-CN.md', 'source/ui_patch.py',
+            'DISCLAIMER.md', 'DISCLAIMER.zh-CN.md', 'NOTICE.zh-CN.md',
+            'CHANGELOG.md', 'CHANGELOG.zh-CN.md', 'source/ui_patch.py',
             'source/radio_patch.py', 'source/persistence_patch.py', 'source/hss_patch.py',
             'windows/build_package.py', 'windows/installer.nsi',
+            'windows/test_build_package.py', 'windows/input_manifest.json',
+            '.gitignore', '.gitattributes', 'inputs/README.md', 'inputs/README.zh-CN.md',
+            'C11/README.md', 'C11/README.zh-CN.md', 'C11/recovered_logic.c', 'tests/VERIFICATION.json',
             'tools/reference_codec.py', 'tools/package_source.py'}
 
 
@@ -56,11 +60,13 @@ def inventory():
 
 def source_manifest(files):
     return {
-        'format': 'airremote-air2-source-v1', 'name': 'AIR2-P8', 'developer': 'Caimankekw',
+        'format': 'airremote-air2-source-v1', 'name': 'AIR2-P8-FIX1', 'developer': 'Caimankekw',
         'license': 'AGPL-3.0-only; authored material only; see NOTICE.md',
+        'release_tag': 'p8-fix1-20261016', 'release_date': '2026-10-16',
+        'hardware_validated': False,
         'original_updater_sha256': 'e56b19080bd6330a5461dd4e3d614fc6d81dcc533e945e6090e7db63824bc240',
-        'firmware_sha256': '337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185',
-        'updater_sha256': 'dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1',
+        'firmware_sha256': 'a6e6284c2186d557eff9049afa3c66ec78f09406586110702f94baaafacd9ef8',
+        'updater_sha256': 'f19ebc6152539745e456d0d4060a2bca6669f0897e81e9d1ed0f2a96ff1cdfed',
         'files': {name: {'size': len(data), 'sha256': sha(data)} for name, data in sorted(files.items())},
         'scope': 'Source and generic reference parameters; no vendor EXE, device capture, build output or historical releases.',
     }
@@ -76,7 +82,7 @@ def verify(archive):
                  'Unexpected ZIP path')
         manifest_name = PREFIX + '/source_manifest.json'
         manifest = json.loads(zipped.read(manifest_name))
-        need(manifest['format'] == 'airremote-air2-source-v1' and manifest['name'] == 'AIR2-P8', 'Wrong source manifest')
+        need(manifest['format'] == 'airremote-air2-source-v1' and manifest['name'] == 'AIR2-P8-FIX1', 'Wrong source manifest')
         expected = {PREFIX + '/' + name for name in manifest['files']} | {manifest_name}
         need(set(names) == expected, 'Source inventory mismatch')
         for name, entry in manifest['files'].items():
@@ -107,7 +113,7 @@ def main():
     files['source_manifest.json'] = encoded
     with zipfile.ZipFile(archive, 'x', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipped:
         for name, data in sorted(files.items()):
-            entry = zipfile.ZipInfo(PREFIX + '/' + name, (2026, 10, 15, 0, 0, 0))
+            entry = zipfile.ZipInfo(PREFIX + '/' + name, (2026, 10, 16, 0, 0, 0))
             entry.compress_type = zipfile.ZIP_DEFLATED
             entry.external_attr = 0o100644 << 16
             zipped.writestr(entry, data)

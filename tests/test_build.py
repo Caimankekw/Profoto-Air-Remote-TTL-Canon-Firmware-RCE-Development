@@ -31,7 +31,7 @@ class SourceBuildTests(unittest.TestCase):
         cls.artifacts = builder.prepare(cls.exe)
         container = builder.load('build_test_container', ROOT / 'tools/container.py').Container(cls.exe)
         cls.original, cls.mask = builder.load('build_test_codec', ROOT / 'tools/reference_codec.py').ReferenceCodec().decode_original(container.hex.memory)
-        cls.image = cls.artifacts['AIR2-P8.base4000.partial.bin']
+        cls.image = cls.artifacts['AIR2-P8-FIX1.base4000.partial.bin']
         cls.scratch = Path(tempfile.mkdtemp(prefix='air2_p8_build_tests_'))
 
     def test_source_image_and_exe_match_frozen_hashes(self):

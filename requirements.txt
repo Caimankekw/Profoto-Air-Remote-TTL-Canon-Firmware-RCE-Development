@@ -1,2 +1,4 @@
 # Python >= 3.9; firmware, source archive and Windows packaging use the standard library.
 # NSIS and 7-Zip are separate Windows build tools; see windows/README.md.
+# Python >= 3.9；固件构建、源码归档和 Windows 封包脚本使用标准库。
+# NSIS 与 7-Zip 是独立的 Windows 构建工具；见 windows/README.zh-CN.md。

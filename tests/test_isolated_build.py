@@ -15,8 +15,8 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-IMAGE_SHA = '337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185'
-EXE_SHA = 'dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1'
+IMAGE_SHA = 'a6e6284c2186d557eff9049afa3c66ec78f09406586110702f94baaafacd9ef8'
+EXE_SHA = 'f19ebc6152539745e456d0d4060a2bca6669f0897e81e9d1ed0f2a96ff1cdfed'
 DRIVER = r'''
 import os, pathlib, runpy, sys
 root = pathlib.Path(sys.argv[1]).resolve()
@@ -63,10 +63,10 @@ def main():
                             capture_output=True, text=True)
     if result.returncode:
         raise RuntimeError(result.stdout + '\n' + result.stderr)
-    image = (isolated / 'output/AIR2-P8.base4000.partial.bin').read_bytes()
-    exe = (isolated / 'output/AirRemote_TTL_C_C11_AIR2_P8_Caimankekw_EXPERIMENTAL.exe').read_bytes()
+    image = (isolated / 'output/AIR2-P8-FIX1.base4000.partial.bin').read_bytes()
+    exe = (isolated / 'output/AirRemote_TTL_C_C11_AIR2_P8_FIX1_Caimankekw_EXPERIMENTAL.exe').read_bytes()
     if sha(image) != IMAGE_SHA or sha(exe) != EXE_SHA:
-        raise RuntimeError('Isolated output differs from frozen P8')
+        raise RuntimeError('Isolated output differs from pinned P8-FIX1')
     report = {'status': 'PASS_ISOLATED_SOURCE_BUILD', 'python_isolated_flag': True,
               'file_access_guard_active': True, 'workspace_dependency': False,
               'image_sha256': sha(image), 'exe_sha256': sha(exe),

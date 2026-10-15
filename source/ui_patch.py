@@ -345,12 +345,19 @@ def construct(original, base=0x99c8, imports=None):
     a.label('relative_writer');a.w(0x0c00)
     a.label('idle_preserve_m');mf(0x203);xor(1);go('idle_return','BNZ')
     call('ready_for_edit');a.w(0x0900);go('idle_return','BZ')
-    mf(0x266);go('idle_clear_relative','BNZ')
+    a.label('idle_ready');mf(0x266);go('idle_clear_relative','BNZ')
     for f in range(0x269,0x26f):mf(f);go('idle_clear_relative','BNZ')
     a.label('idle_return');ret()
     a.label('idle_clear_relative')
     call('clear_relative');go('redraw_all')
-    a.label('idle_mode_gate');mf(0x52);go('idle_native_continue','BZ');mf(0x203);xor(1);go('idle_return','BNZ')
+    # FIX1: 7724 has already marked the native deadline expired (FFFF).
+    # Do not consume it while native/camera/legacy TX work blocks UI cleanup.
+    # Check readiness once, then commit deadline clear and AIR1 cleanup on the
+    # same straight-line path; a second ready check could swallow expiry.
+    a.label('idle_mode_gate');mf(0x52);go('idle_transaction','BZ');mf(0x203);xor(1);go('idle_return','BNZ')
+    a.label('idle_transaction');mf(0x203);xor(1);go('idle_native_continue','BNZ')
+    call('ready_for_edit');a.w(0x0900);go('idle_return','BZ')
+    lit(0xb1);mw(1);a.call(0x96d0);go('idle_ready')
     a.label('idle_native_continue');a.goto(0x9372)
 
     a.label('camera_mode');mf(0x2c0);xor(1);go('camera_request_store','BNZ');call('pending_cancel')
@@ -468,7 +475,7 @@ def construct(original, base=0x99c8, imports=None):
     need(original[base-0x4000:a.pc-0x4000]==b'\xff'*len(a.code),'UI cave not erased')
     patches.append((base,a.code,'AIR2-P8 C-HEAD/C-MODEL combos and direct power keys'))
     names=('persistence_init','persistence_commit','radio_power_commit','radio_switch_commit','radio_fec_refresh')
-    metadata=dict(version=8,status='EXPERIMENTAL_OFFLINE_COMPONENT',exports=dict(a.labels),hooks=hooks,imports={n:imports.get(n,0x4000) for n in names},
+    metadata=dict(version=8,revision='FIX1',status='EXPERIMENTAL_OFFLINE_COMPONENT',exports=dict(a.labels),hooks=hooks,imports={n:imports.get(n,0x4000) for n in names},
         ram={'A2_targets':list(targets),'ABC_FEC':[0x263,0x264,0x265],'relative_visible':0x266,'chord_latched':0x267,'A1_relative':list(range(0x269,0x26f)),'head_mask':0x26f,'model_mask':0x270,'page':0x271,'manual_kind':0x203,'sender_dirty':0x204,'nv_dirty':0x205,'camera_pending':0x206,'key_active':0x207,'startup_mode_token':0x208,'startup_last_manual_token':0x209,'pending_state':0x2c0,'pending_first_key':0x2c1,'pending_start':[0x2c2,0x2c3],'pending_candidate':0x2c4,'pending_stable_start':[0x2c5,0x2c6],'pending_domain':[0x2c7,0x2c8,0x2c9,0x2ca],'pending_dispatch':0x2cb,'pending_stall_count':[0x2cc,0x2cd],'pending_last_tick':[0x2ce,0x2cf],'scratch':list(range(0x272,0x280)),'mode':0x52,'active':[0x3f,0x40,0x41]},
         panel_range=[1,100],relative_range=[-99,99],fec_range=[-20,20],requires_radio_6B8E_replacement=True,source_dependencies=['ui_patch.py'],
         behavior=['All six canonical states are separate from the three-row projection','TTL ABC FEC; TTL DEF last-manual relative/absolute; mixed ALL is explicit new policy','Atomic bounds reject for all selected enabled groups','Only C/HEAD/MODEL enter200-fine pending; A/B/+/- take the direct original short/long key path', 'C+HEAD pages in every mode; C+MODEL toggles A1/A2 only in MAN and is swallowed without preference change in TTL', 'MODEL/HEAD share ADCfield0: their simultaneous analog alias is unknown, not a provable bitmask6/7', 'No C selection or Head/Model change before pending single/combination resolution','Combination/release stability needs repeated raw samples spanning at least 10 native fine counts; no millisecond calibration claim','A legal combination first seen before count200 may finish confirmation later; after timeout only the first single may dispatch','4096 consecutive polls without fine-clock progress cancel; domain change or queue/camera busy also cancels until stable release','Pending C/HEAD/MODEL returns to main; A/B/+/- have no combination window; native8ACC/9086 and synchronous TX limits remain','Chord latch clears only after stable all-released sampling; ADC busy/timeout fails closed','DEF hides fixed ABC glass labels; temporary d/E/F; true global TTL/MAN label retained','Head/Model six-group masks; ALL all-on unless already all-on','No MAN blinking; A2 values stay visible, A1 values only after adjustment until entry/selection/idle clear; Head OFF is --','Mode preserves last manual subtype; canonical ABC FEC continuously mirrors native object','Existing B1 idle timing clears A1 six relative values/visibility in MAN or TTL DEF without radio/NVM; old queue drains before edits','Radio TX/ACK are not RF-completion guarantees'])

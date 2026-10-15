@@ -1,78 +1,221 @@
 {
-  "status": "PASS_STANDALONE_RELEASE_REPRODUCTION",
+  "schema_version": 2,
+  "status": "DOCUMENTED_FIX1_FROZEN_EVIDENCE_WITH_SEPARATE_P8_HISTORY",
   "developer": "Caimankekw",
-  "suites": {
-    "test_reference_codec.py": {
-      "passed": 7,
-      "failed": 0,
-      "skipped": 0,
-      "source_sha256": "7e991909f5a2d5fcb31d93e8b5274814bf43f1ef36558922ac410c4c17af386b"
+  "release_tag": "p8-fix1-20261016",
+  "current_fix1": {
+    "name": "AIR2-P8-FIX1",
+    "evidence_source": "outputs/AirRemote_TTL_C_AIR2_P8_FIX1_20261015/verification.json",
+    "evidence_source_sha256": "723dac5c92324f14088c033fd0d328a1b8cba2b864793f9a2fdd4069d59b42db",
+    "frozen_candidate_report": {
+      "status": "PASS_OFFLINE_FIX1_CANDIDATE_PACKAGE",
+      "developer": "Caimankekw",
+      "name": "AIR2-P8-FIX1",
+      "baseline_sha256": "337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185",
+      "image_sha256": "a6e6284c2186d557eff9049afa3c66ec78f09406586110702f94baaafacd9ef8",
+      "updater_sha256": "f19ebc6152539745e456d0d4060a2bca6669f0897e81e9d1ed0f2a96ff1cdfed",
+      "source_zip_sha256": "14649a975625fc3ed72b5ac0a9237ad5b622e76905fa0b831404c34962728141",
+      "original_restore_sha256": "e56b19080bd6330a5461dd4e3d614fc6d81dcc533e945e6090e7db63824bc240",
+      "regression_reports": {
+        "ui_regression.json": {
+          "sha256": "167bdbf5a12f380670fb2f7f7e2c21cc456a84207b6037214400c5e969b94752",
+          "cases": 470,
+          "status": "PASS_OFFLINE_P8_UI_COMPONENT"
+        },
+        "radio_regression.json": {
+          "sha256": "1ad84643b6181785c584581aeedfd020663d2ccb139c2276a15eb2731ea35fed",
+          "cases": 1944,
+          "status": true
+        },
+        "persistence_regression.json": {
+          "sha256": "73bcecea26fceb7f9694d0bf4fec747923933b82a625d096e3c7188abd79bb22",
+          "cases": 717,
+          "status": "PASS_BOUNDED_MACHINE_CODE_AND_FAULT_MODEL"
+        },
+        "integration_regression.json": {
+          "sha256": "6e826f2d7e69bee1d6ca0c460820ff3371ff00d013440efe4c59f23fe3745f5a",
+          "cases": 333,
+          "status": "PASS_BOUNDED_P8_INTEGRATION"
+        },
+        "idle_expiry_regression.json": {
+          "sha256": "ac4e3f54eee9539abad406ee8819351d387e417860d7bc1948a52b4c7701a40e",
+          "cases": 77,
+          "status": "PASS_FIX1_ACTUAL_NATIVE_IDLE_TRANSACTION"
+        }
+      },
+      "firmware_replay_manifest_sha256": "338e15df428e0f5655df4723b1e12725d4c5b728efc7ce086e7913a15fe0173d",
+      "packaging_build_manifest_sha256": "021dcd4a10f0073b0ffa74d4ad85fe6f456b4e2d52da128cbdab548e4fc37505",
+      "firmware_components_identical_across_manifests": true,
+      "manifest_difference_scope": "Source provenance/packaging/documentation inventory finalized after firmware replay; same image, component bytes, labels and source code.",
+      "source_zip_rebuild": {
+        "status": "PASS",
+        "python_isolated": true,
+        "image_identical": true,
+        "updater_identical": true,
+        "files": 35
+      },
+      "unchanged_authored_sources": {
+        "hss_patch.py": "77a240b4f35326d9a4e2764794e44ddede58105ddf2b40606776be2f446b59ab",
+        "radio_patch.py": "5c7fffb2a112cf3a96e95ea28b52746553bf4a08fc82cd1cdbd0bd75ced52ab1",
+        "persistence_patch.py": "ce2b0f5e726f9722faad69c8832307248af3275e85623f704e86efcf79ce3708"
+      },
+      "hss_p3_intervals_preserved": [
+        [
+          16612,
+          16616
+        ],
+        [
+          16868,
+          16872
+        ],
+        [
+          17014,
+          17016
+        ],
+        [
+          17170,
+          17174
+        ],
+        [
+          17254,
+          17256
+        ],
+        [
+          17318,
+          17322
+        ],
+        [
+          38784,
+          39368
+        ]
+      ],
+      "runtime_nvm_pages_erased": true,
+      "original_tail_preserved": true,
+      "gui_container_checks": {
+        "outside_hex_identical": true,
+        "unknown_first_word_preserved": true,
+        "existing_crc_and_codec_reused": true,
+        "sparse_layout_preserved": true,
+        "recipe_roundtrip": {
+          "status": "PASS",
+          "sha256": "f19ebc6152539745e456d0d4060a2bca6669f0897e81e9d1ed0f2a96ff1cdfed",
+          "changed_span_bytes": 23245,
+          "hex_records": 7109,
+          "device_accessed": false,
+          "device_write_or_boot_verified": false
+        }
+      },
+      "additional_tests": {
+        "source_build_boundaries": 13,
+        "container_boundaries": 13,
+        "reference_codec": 7
+      },
+      "vendor_updater_executed": false,
+      "device_accessed": false,
+      "device_flashed": false,
+      "hardware_boot_verified": false,
+      "limitations": [
+        "Original GUI bytes preserved; modified image still requires a new physical boot and camera test.",
+        "Clock/LCD/UART/Flash fixtures bound the replay; no complete MCU/ISR or RF transport proof.",
+        "HSS-P3 bytes and source remain identical; this task does not establish new physical HSS measurements."
+      ]
     },
-    "test_container.py": {
-      "passed": 13,
-      "failed": 0,
-      "skipped": 0,
-      "source_sha256": "20ae335b1117db4d61dbbb45aff472106bac1cefdd95d13bbdd4986da35ac679"
-    },
-    "test_build.py": {
-      "passed": 13,
-      "failed": 0,
-      "skipped": 0,
-      "source_sha256": "e7af0708e958928fe44a1771bf49c85035c8d5f7a8e643e2830347273c9b4723"
+    "report_scope": "Frozen candidate firmware and updater evidence, copied without changing report content. The source ZIP hash and 35-file inventory describe the frozen input archive, not the integrated Git release source ZIP or NSIS wrapper.",
+    "integrated_release_packaging": "The new release source archive includes C11, windows, inputs, .gitignore and .gitattributes. Its archive hash and final packaging checks are recorded separately with the release artifacts; this record does not assert those hashes or promote historical P8 results.",
+    "hardware_boot_verified": false,
+    "camera_test_performed": false
+  },
+  "historical_p8": {
+    "name": "AIR2-P8",
+    "release_tag": "p8-20261015",
+    "release_url": "https://github.com/Caimankekw/Profoto-Air-Remote-TTL-Canon-Firmware-RCE-Development/releases/tag/p8-20261015",
+    "scope": "Historical P8 standalone build and packaging verification only. Its image, updater and source hashes are not FIX1 results.",
+    "report": {
+      "status": "PASS_STANDALONE_RELEASE_REPRODUCTION",
+      "developer": "Caimankekw",
+      "suites": {
+        "test_reference_codec.py": {
+          "passed": 7,
+          "failed": 0,
+          "skipped": 0,
+          "source_sha256": "7e991909f5a2d5fcb31d93e8b5274814bf43f1ef36558922ac410c4c17af386b"
+        },
+        "test_container.py": {
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "source_sha256": "20ae335b1117db4d61dbbb45aff472106bac1cefdd95d13bbdd4986da35ac679"
+        },
+        "test_build.py": {
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "source_sha256": "e7af0708e958928fe44a1771bf49c85035c8d5f7a8e643e2830347273c9b4723"
+        }
+      },
+      "test_cases_passed": 33,
+      "isolated_build": {
+        "status": "PASS_ISOLATED_SOURCE_BUILD",
+        "python_isolated_flag": true,
+        "file_access_guard_active": true,
+        "workspace_dependency": false,
+        "image_sha256": "337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185",
+        "exe_sha256": "dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1",
+        "external_inputs": [
+          "explicit official C11 EXE"
+        ],
+        "copied_files": [
+          "build.py",
+          "reference/README.md",
+          "reference/README.zh-CN.md",
+          "reference/c11_offset_transform.bin",
+          "reference/codec_equivalence.json",
+          "reference/codec_manifest.json",
+          "source/PROVENANCE.json",
+          "source/README.md",
+          "source/README.zh-CN.md",
+          "source/hss_patch.py",
+          "source/linker.py",
+          "source/persistence_patch.py",
+          "source/radio_patch.py",
+          "source/ui_patch.py",
+          "tools/container.py",
+          "tools/disassemble.py",
+          "tools/firmware.py",
+          "tools/package_source.py",
+          "tools/pic18_listing.py",
+          "tools/rebuild_windows.py",
+          "tools/reference_codec.py"
+        ],
+        "device_accessed": false,
+        "scratch_retained": true
+      },
+      "source_build_image_sha256": "337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185",
+      "source_build_exe_sha256": "dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1",
+      "source_build_hex_sha256": "8c86f3583745187586481221379342e5baf1733412b44186cba60459921b0640",
+      "device_accessed": false,
+      "new_hardware_test_performed": false,
+      "original_executable_used_as_data_only": true,
+      "build_manifest_sha256": "b420f435a6f792ca5a85fb77857011c3946dcca4924bc76b09b12fbcef4b41f3",
+      "builder_sha256": "db12d055e660058512f3f2c8b1795b485d05b924d510ccd8df66e6b90e17bb0f",
+      "isolation_test_source_sha256": "0e85e53008dc1b9e8734b7ddbd86a8f1da4bacf3f5afe50db0255145564274c4",
+      "note": "The 33 tests and isolated source build verify this portable build toolchain; prior P8 behavior tests are separate evidence for the identical image.",
+      "authored_source_license": "AGPL-3.0-only",
+      "license_scope": "Authored build/test sources only; this verification report does not relicense vendor firmware or updater bytes.",
+      "license_scope_correction_artifacts_unchanged": true,
+      "linker_source_sha256": "c7a8fdb48fb66ee29e9a0dbcdbf4de93f0b546e9e3d112876ecdcf7f9b74ff45",
+      "publication_repository": "Caimankekw/Profoto-Air-Remote-TTL-Canon-Firmware-RCE-Development",
+      "publication_branch": "P8",
+      "publication_runtime_unchanged": true
     }
   },
-  "test_cases_passed": 33,
-  "isolated_build": {
-    "status": "PASS_ISOLATED_SOURCE_BUILD",
-    "python_isolated_flag": true,
-    "file_access_guard_active": true,
-    "workspace_dependency": false,
-    "image_sha256": "337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185",
-    "exe_sha256": "dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1",
-    "external_inputs": [
-      "explicit official C11 EXE"
-    ],
-    "copied_files": [
-      "build.py",
-      "reference/README.md",
-      "reference/README.zh-CN.md",
-      "reference/c11_offset_transform.bin",
-      "reference/codec_equivalence.json",
-      "reference/codec_manifest.json",
-      "source/PROVENANCE.json",
-      "source/README.md",
-      "source/README.zh-CN.md",
-      "source/hss_patch.py",
-      "source/linker.py",
-      "source/persistence_patch.py",
-      "source/radio_patch.py",
-      "source/ui_patch.py",
-      "tools/container.py",
-      "tools/disassemble.py",
-      "tools/firmware.py",
-      "tools/package_source.py",
-      "tools/pic18_listing.py",
-      "tools/rebuild_windows.py",
-      "tools/reference_codec.py"
-    ],
-    "device_accessed": false,
-    "scratch_retained": true
-  },
-  "source_build_image_sha256": "337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185",
-  "source_build_exe_sha256": "dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1",
-  "source_build_hex_sha256": "8c86f3583745187586481221379342e5baf1733412b44186cba60459921b0640",
-  "device_accessed": false,
-  "new_hardware_test_performed": false,
-  "original_executable_used_as_data_only": true,
-  "build_manifest_sha256": "b420f435a6f792ca5a85fb77857011c3946dcca4924bc76b09b12fbcef4b41f3",
-  "builder_sha256": "db12d055e660058512f3f2c8b1795b485d05b924d510ccd8df66e6b90e17bb0f",
-  "isolation_test_source_sha256": "0e85e53008dc1b9e8734b7ddbd86a8f1da4bacf3f5afe50db0255145564274c4",
-  "note": "The 33 tests and isolated source build verify this portable build toolchain; prior P8 behavior tests are separate evidence for the identical image.",
+  "limitations": [
+    "No updater execution, USB access or device flashing is established by this documentation integration.",
+    "FIX1 has no verified hardware boot or camera test.",
+    "Bounded clock, LCD, UART and Flash models do not establish complete MCU/ISR, physical RF reception, exposure or power-loss behavior.",
+    "The complete behavior-replay workspace is not included in the compact source archive.",
+    "Historical P8 HSS counts are not a newly executed FIX1 HSS suite or new physical HSS measurements."
+  ],
   "authored_source_license": "AGPL-3.0-only",
-  "license_scope": "Authored build/test sources only; this verification report does not relicense vendor firmware or updater bytes.",
-  "license_scope_correction_artifacts_unchanged": true,
-  "linker_source_sha256": "c7a8fdb48fb66ee29e9a0dbcdbf4de93f0b546e9e3d112876ecdcf7f9b74ff45",
-  "publication_repository": "Caimankekw/Profoto-Air-Remote-TTL-Canon-Firmware-RCE-Development",
-  "publication_branch": "P8",
-  "publication_runtime_unchanged": true
+  "license_scope": "Authored work only; vendor firmware, updater and other third-party material retain their respective rights."
 }

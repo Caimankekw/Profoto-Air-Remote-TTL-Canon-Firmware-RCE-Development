@@ -12,7 +12,7 @@ import build_package as p
 
 def zip_fixture(files=None, manifest_change=None, extra=None):
     files = dict(files or {name: (name + '\n').encode() for name in p.ROOT_DOCS})
-    manifest = {'format': 'airremote-air2-source-v1', 'name': 'AIR2-P8',
+    manifest = {'format': 'airremote-air2-source-v1', 'name': 'AIR2-P8-FIX1',
                 'files': {name: p.record(blob) for name, blob in files.items()}}
     if manifest_change:
         manifest_change(manifest)
@@ -44,7 +44,7 @@ def version_node(key, value=b'', children=(), kind=1):
 
 def pe_fixture(company='Caimankekw', elevation='asInvoker'):
     strings = [version_node(k, (v + '\0').encode('utf-16le')) for k, v in (
-        ('CompanyName', company), ('ProductName', 'Air Remote TTL-C AIR2-P8 Custom Updater'))]
+        ('CompanyName', company), ('ProductName', 'Air Remote TTL-C AIR2-P8-FIX1 Custom Updater'))]
     version = version_node('VS_VERSION_INFO', bytes(52), [
         version_node('StringFileInfo', children=[version_node('040904b0', children=strings)])], kind=0)
     manifest = ('<assembly><trustInfo><security><requestedPrivileges><requestedExecutionLevel level="' +
@@ -75,6 +75,14 @@ def pe_fixture(company='Caimankekw', elevation='asInvoker'):
 
 class PackageBoundaries(unittest.TestCase):
     def test_valid_source_zip(self):
+        self.assertEqual(p.VERSION_NAME, 'AIR2-P8-FIX1')
+        self.assertEqual(p.SOURCE_ROOT, 'AirRemote_TTL_C_AIR2_P8_FIX1/')
+        self.assertTrue({'NOTICE.zh-CN.md', 'CHANGELOG.md', 'CHANGELOG.zh-CN.md'} <= set(p.ROOT_DOCS))
+        pins = json.loads((p.HERE / 'input_manifest.json').read_text(encoding='utf-8'))
+        self.assertEqual(pins['name'], 'AIR2-P8-FIX1')
+        self.assertEqual(pins['updater']['name'], 'AirRemote_TTL_C_C11_AIR2_P8_FIX1_Caimankekw_EXPERIMENTAL.exe')
+        self.assertEqual(pins['updater']['sha256'], 'f19ebc6152539745e456d0d4060a2bca6669f0897e81e9d1ed0f2a96ff1cdfed')
+        self.assertEqual(pins['firmware']['sha256'], 'a6e6284c2186d557eff9049afa3c66ec78f09406586110702f94baaafacd9ef8')
         data = zip_fixture()
         self.assertEqual(set(p.parse_source_archive(data, p.sha(data))), set(p.ROOT_DOCS) | {'source_manifest.json'})
 
@@ -83,7 +91,7 @@ class PackageBoundaries(unittest.TestCase):
             p.parse_source_archive(zip_fixture(), '0' * 64)
 
     def test_wrong_source_identity(self):
-        data = zip_fixture(manifest_change=lambda m: m.update(name='AIR2-P7'))
+        data = zip_fixture(manifest_change=lambda m: m.update(name='AIR2-P8'))
         with self.assertRaises(ValueError):
             p.parse_source_archive(data, p.sha(data))
 
@@ -110,7 +118,9 @@ class PackageBoundaries(unittest.TestCase):
     def test_generated_and_escaping_source_paths(self):
         for name in ('../bad.py', '/bad.py', 'C:/bad.py', 'a\\bad.py', 'build/a.py', '.git/config', 'dist/a.zip'):
             with self.subTest(name=name):
-                data = zip_fixture(extra=[(name, b'x')])
+                files = {doc: (doc + '\n').encode() for doc in p.ROOT_DOCS}
+                files[name] = b'x'
+                data = zip_fixture(files=files)
                 with self.assertRaises(ValueError):
                     p.parse_source_archive(data, p.sha(data))
 
@@ -147,6 +157,8 @@ class PackageBoundaries(unittest.TestCase):
         self.assertNotIn('WriteUninstaller', text)
         self.assertNotIn('Delete ', text)
         self.assertEqual(text.count("  Exec '"), 1)
+        self.assertIn("  Exec '\"$INSTDIR\\AirRemote_TTL_C_C11_AIR2_P8_FIX1_Caimankekw_EXPERIMENTAL.exe\"'", text)
+        self.assertIn('Name "Air Remote TTL-C AIR2-P8-FIX1 Custom Updater"', text)
 
 
 if __name__ == '__main__':

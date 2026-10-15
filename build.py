@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2026 Caimankekw
-"""Build the pinned AIR2-P8 firmware from authored sources and an official C11 EXE.
+"""Build the pinned AIR2-P8-FIX1 firmware from authored sources and an official C11 EXE.
 
 Python 3.9+, standard library only. The vendor EXE is parsed, never executed.
 No USB, updater launch, device reads/writes, network calls, or workspace inputs.
@@ -15,10 +15,10 @@ import sys
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parent
 BASE, END, PATCH_END = 0x4000, 0x1FC00, 0xF800
-EXPECTED_IMAGE_SHA = '337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185'
-EXPECTED_EXE_SHA = 'dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1'
-EXPECTED_HEX_SHA = '8c86f3583745187586481221379342e5baf1733412b44186cba60459921b0640'
-EXE_NAME = 'AirRemote_TTL_C_C11_AIR2_P8_Caimankekw_EXPERIMENTAL.exe'
+EXPECTED_IMAGE_SHA = 'a6e6284c2186d557eff9049afa3c66ec78f09406586110702f94baaafacd9ef8'
+EXPECTED_EXE_SHA = 'f19ebc6152539745e456d0d4060a2bca6669f0897e81e9d1ed0f2a96ff1cdfed'
+EXPECTED_HEX_SHA = '7f862508c314cad49b15096adf5e84e67879f851162abebf159a63cb88ccd67c'
+EXE_NAME = 'AirRemote_TTL_C_C11_AIR2_P8_FIX1_Caimankekw_EXPERIMENTAL.exe'
 
 
 def need(ok, message):
@@ -82,7 +82,7 @@ def prepare(original_exe):
     image, built_mask, manifest = linker.construct(original, mask)
     need(built_mask == mask, 'Linker changed known mask')
     changed = validate_image(original, mask, image)
-    need(sha(image) == EXPECTED_IMAGE_SHA, 'Source-built image differs from frozen AIR2-P8')
+    need(sha(image) == EXPECTED_IMAGE_SHA, 'Source-built image differs from pinned AIR2-P8-FIX1')
     replacements = {}
     for start, end in spans(changed):
         replacements.update(codec.encode_patch(start, image[start-BASE:end-BASE]))
@@ -99,7 +99,7 @@ def prepare(original_exe):
     opaque = bytes(reopened.hex.memory[a] for a in range(0x4002, 0x10000))
     need(codec.decode(0x4002, opaque) == image[2:0xC000], 'Output decode does not match linked image')
     need(sha(executable) == EXPECTED_EXE_SHA and sha(encoded.text) == EXPECTED_HEX_SHA,
-         'Packaged EXE or embedded HEX differs from frozen AIR2-P8')
+         'Packaged EXE or embedded HEX differs from pinned AIR2-P8-FIX1')
     start, end = original_container.start, original_container.end
     need(executable[:start] == original_exe[:start] and executable[end:] == original_exe[end:],
          'Vendor GUI/loader/resource metadata changed outside embedded firmware')
@@ -126,10 +126,10 @@ def prepare(original_exe):
         'this_build_establishes_hardware_validation': False,
         'source_sha256': {p.relative_to(ROOT).as_posix(): sha(p.read_bytes()) for p in sources},
         'recipe_reproduction': reproduction,
-        'plaintext_file': 'AIR2-P8.base4000.partial.bin', 'output_exe_file': EXE_NAME,
+        'plaintext_file': 'AIR2-P8-FIX1.base4000.partial.bin', 'output_exe_file': EXE_NAME,
         'partial_image_is_not_a_direct_flash_file': True,
     })
-    return {'AIR2-P8.base4000.partial.bin': image, 'known_mask.bin': mask,
+    return {'AIR2-P8-FIX1.base4000.partial.bin': image, 'known_mask.bin': mask,
             EXE_NAME: executable, 'manifest.json': json_bytes(manifest),
             'reproduction_recipe.json': json_bytes(recipe)}
 

@@ -1,37 +1,54 @@
 {
-  "format": "air2-p8-authored-source-provenance-v1",
+  "format": "air2-p8-fix1-authored-source-provenance-v1",
   "developer": "Caimankekw",
   "license": "AGPL-3.0-only",
   "files": {
     "source/ui_patch.py": {
       "upstream": "air2_p8_dev/target_patch/ui_patch.py",
       "upstream_sha256": "1aa5e10867523456a388dfb01e21d5da6833941a3e3f97ddaa63d6cf8714147c",
-      "change": "unchanged logic; LF text normalization"
+      "change": "unchanged logic; LF text normalization",
+      "p8_source_sha256": "89ad0ec1c027ce8d028bf4818182cd8b1d61f1367ccdc3443bd1e73e4bfe6260",
+      "fix1_source_sha256": "8e6caab40b24ded9c946f55a6451d62bf059b76aae001cbbe6dcda2f7decafad",
+      "fix1_change": "Native AIR1 idle deadline consumption and cleanup use one readiness check; expired sentinel is retained while busy"
     },
     "source/radio_patch.py": {
       "upstream": "air2_p8_dev/target_patch/radio_patch.py",
       "upstream_sha256": "bc6671f230b14ea9c92fe9e2f65ebef97299bafc3645fd2655b4f2cd36b0c827",
-      "change": "local HSS assembler import only"
+      "change": "local HSS assembler import only",
+      "p8_source_sha256": "5c7fffb2a112cf3a96e95ea28b52746553bf4a08fc82cd1cdbd0bd75ced52ab1",
+      "fix1_source_sha256": "5c7fffb2a112cf3a96e95ea28b52746553bf4a08fc82cd1cdbd0bd75ced52ab1",
+      "fix1_change": "Byte-identical authored source to frozen AIR2-P8"
     },
     "source/persistence_patch.py": {
       "upstream": "air2_p8_dev/target_patch/persistence_patch.py",
       "upstream_sha256": "58e6b1e0ada70b8cda318372e59c60af551e6358c56d7a7395ab5319291c788e",
-      "change": "unchanged logic; LF text normalization"
+      "change": "unchanged logic; LF text normalization",
+      "p8_source_sha256": "ce2b0f5e726f9722faad69c8832307248af3275e85623f704e86efcf79ce3708",
+      "fix1_source_sha256": "ce2b0f5e726f9722faad69c8832307248af3275e85623f704e86efcf79ce3708",
+      "fix1_change": "Byte-identical authored source to frozen AIR2-P8"
     },
     "source/hss_patch.py": {
       "upstream": "hss_port/flashable/target_patch/build_native_hss_p1.py",
       "upstream_sha256": "dc282a7397c2f9604aca6bb049c2855282f1347dea7e81bfd230246fc990020a",
-      "change": "retain Asm/construct exactly; remove historical CLI and workspace dependencies"
+      "change": "retain Asm/construct exactly; remove historical CLI and workspace dependencies",
+      "p8_source_sha256": "77a240b4f35326d9a4e2764794e44ddede58105ddf2b40606776be2f446b59ab",
+      "fix1_source_sha256": "77a240b4f35326d9a4e2764794e44ddede58105ddf2b40606776be2f446b59ab",
+      "fix1_change": "Byte-identical authored source to frozen AIR2-P8"
     },
     "source/linker.py": {
       "upstream": "air2_p8_dev/build_air2.py",
       "upstream_sha256": "30c6eb24096d2d6943275589a97103b0341d55adc72798d12dfbdbda09a8b12f",
-      "change": "explicit decoded inputs and source-generated HSS baseline; unchanged two-pass linking/patch guards; standalone CLI lives at root build.py"
+      "change": "explicit decoded inputs and source-generated HSS baseline; unchanged two-pass linking/patch guards; standalone CLI lives at root build.py",
+      "p8_source_sha256": "c7a8fdb48fb66ee29e9a0dbcdbf4de93f0b546e9e3d112876ecdcf7f9b74ff45",
+      "fix1_source_sha256": "a6e3d660f68f7fb7c1ce69a85e3f50becbd15d44e94aec79cf5f6fc8417ef31d",
+      "fix1_change": "Version/contract metadata only; linker logic unchanged"
     },
     "tools/pic18_listing.py": {
       "upstream": "recovery/plaintext/disassembly/pic18_listing.py",
       "upstream_sha256": "8d706947d84467a1690bdd6e5bb9cc6c84d3acc3fc800b232398d4a07c986c03",
       "change": "retain numeric decoder; remove workspace CLI; offline explicit-input entry is tools/disassemble.py"
     }
-  }
+  },
+  "base_release": "AIR2-P8",
+  "base_image_sha256": "337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185"
 }

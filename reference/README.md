@@ -1,14 +1,14 @@
-# C11 address-transformation reference data
+# C11 address-transform reference data
 
 English | [简体中文](README.zh-CN.md)
 
-Developer: Caimankekw. Authored tool source uses AGPL-3.0-only.
+Developer: Caimankekw. Authored tools use AGPL-3.0-only.
 
-`c11_offset_transform.bin` contains address-specific transformation parameters recovered from protocol behavior. It contains no device serial number, batch, date, USB path, device program backup, or original program plaintext. Offline tools use it to convert between C11 updater transport bytes and MCU bytes. Original firmware and updater rights remain with their respective owners.
+`c11_offset_transform.bin` holds address-transform parameters derived from recovered protocol behavior. It does not contain device serials, batches, dates, USB paths, device backups or original firmware plaintext. Offline tools use it to convert the original C11 updater's transport bytes to and from MCU bytes. Original firmware and updater rights remain with their respective owners.
 
-The supported MCU byte-address interval is strictly `[0x4002, 0x10000)`. The 73,725-byte file contains 49,150 XOR bytes followed by 24,575 packed mask bytes. The low nibble belongs to the lower address and the high nibble to the next address. There is no file header; `codec_manifest.json` and tool constants pin the range, format and SHA-256.
+The supported MCU byte-address range is exactly `[0x4002, 0x10000)`. The file contains 73,725 bytes: 49,150 XOR bytes followed by 24,575 packed mask bytes. A mask's low nibble applies to the lower address, and its high nibble to the next address. There is no file header. `codec_manifest.json` and tool constants pin the layout, range and SHA-256.
 
-For plaintext byte `p`, XOR byte `k`, and four-bit mask `m`:
+For plaintext byte `p`, XOR byte `k` and four-bit mask `m`:
 
 ```text
 t = (p XOR (p >> 4)) AND m AND 0x0F
@@ -17,10 +17,10 @@ encode(p) = swap(p, m) XOR k
 decode(c) = swap(c XOR k, m)
 ```
 
-Addresses do not move. Each mask bit selects a pair of bits four positions apart in the same byte; the swap is its own inverse. The mapping was recovered using fixed-fill and fixed-instruction-word references. Device information and raw transactions from those reference reads are not distributed.
+Byte addresses do not move. Each mask bit controls exchange of a pair of bits four positions apart; the swap is its own inverse. The mapping was recovered with fixed-fill and fixed-instruction references. Device information and raw transactions used during recovery are not exported.
 
-`tools/reference_codec.py` uses only Python's standard library. `ReferenceCodec().encode(address, plaintext)`, `decode(address, opaque)`, and `encode_patch(address, plaintext)` reject out-of-range requests.
+`tools/reference_codec.py` uses only the Python standard library. Its `encode`, `decode` and `encode_patch` methods reject out-of-range requests.
 
-`decode_original_bytes()` accepts only the SHA-256-pinned complete original C11 application transport region. It returns a 113,664-byte partial plaintext image based at `0x4000` and a known-byte mask. Plaintext bytes `0x4000–0x4001` remain unknown and are represented by zeros with mask zero; these zeros must not be flashed as real instructions. The confirmed FF fill at `0x10000–0x1FBFF` is supplied only after the complete original transport hash matches. This does not establish a generic encoder for that tail. Any rebuilt container must preserve the original opaque first word, tail, sparse gaps and configuration bytes.
+`decode_original_bytes()` accepts only the pinned complete original C11 application transport area and returns a 113,664-byte partial image based at `0x4000`, plus a known-byte mask. Addresses `0x4000–0x4001` remain unknown: their placeholder bytes and mask are zero. Those zeros must not be flashed as instructions. For this pinned C11 input, `0x10000–0x1FBFF` is confirmed FF fill and is filled only after validating the complete transport hash. This does not establish a general encoder for that range. Packaging must preserve the original transport bytes of the first word, tail, sparse gaps and configuration.
 
-`codec_equivalence.json` records comparison with the original workspace decoder at every address and the C11 plaintext/mask hash checks. Run `python -B -m unittest discover -s tests -p test_reference_codec.py` for a self-test that does not require the vendor EXE. Reference equivalence does not validate device boot, RF delivery or light behavior.
+`codec_equivalence.json` records the original per-address comparison against the development decoder and checks the original plaintext/mask hashes. Run `python -B -m unittest discover -s tests -p test_reference_codec.py` for checks that need no vendor input. Reference equivalence does not replace physical boot, RF or lamp testing.

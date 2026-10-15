@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright (C) 2026 Caimankekw
-"""Build a small AIR2-P8 NSIS wrapper offline; never run an updater or installer."""
+"""Build a small AIR2-P8-FIX1 NSIS wrapper offline; never run an updater or installer."""
 from pathlib import Path, PurePosixPath
 from datetime import datetime, timezone
 import argparse
@@ -17,12 +17,16 @@ import zipfile
 sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-SOURCE_ROOT = 'AirRemote_TTL_C_AIR2_P8/'
-PACKAGE_NAME = 'AirRemote-TTL-C-AIR2-P8'
-UPDATER_NAME = 'AirRemote_TTL_C_C11_AIR2_P8_Caimankekw_EXPERIMENTAL.exe'
+VERSION_NAME = 'AIR2-P8-FIX1'
+RELEASE_DATE = '2026-10-16'
+RELEASE_TAG = 'p8-fix1-20261016'
+SOURCE_ROOT = 'AirRemote_TTL_C_AIR2_P8_FIX1/'
+PACKAGE_NAME = 'AirRemote-TTL-C-AIR2-P8-FIX1'
+UPDATER_NAME = 'AirRemote_TTL_C_C11_AIR2_P8_FIX1_Caimankekw_EXPERIMENTAL.exe'
 ORIGINAL_NAME = 'Air-Remote-TTL-C-Firmware-C11.exe'
-INSTALLER_NAME = 'Profoto-AirRemote-TTL-C-AIR2-P8-Custom-Updater.exe'
-ROOT_DOCS = ('LICENSE', 'NOTICE.md', 'DISCLAIMER.md', 'DISCLAIMER.zh-CN.md')
+INSTALLER_NAME = 'Profoto-AirRemote-TTL-C-AIR2-P8-FIX1-Custom-Updater.exe'
+ROOT_DOCS = ('LICENSE', 'NOTICE.md', 'NOTICE.zh-CN.md', 'DISCLAIMER.md', 'DISCLAIMER.zh-CN.md',
+             'CHANGELOG.md', 'CHANGELOG.zh-CN.md')
 NSIS_COMPONENTS = {
     '$PLUGINSDIR/LangDLL.dll': 'Plugins/x86-unicode/LangDLL.dll',
     '$PLUGINSDIR/System.dll': 'Plugins/x86-unicode/System.dll',
@@ -92,7 +96,7 @@ def parse_source_archive(data, expected_sha):
             files[relative] = source.read(info)
     need('source_manifest.json' in files, 'Source manifest missing')
     manifest = json.loads(files['source_manifest.json'])
-    need(manifest.get('format') == 'airremote-air2-source-v1' and manifest.get('name') == 'AIR2-P8',
+    need(manifest.get('format') == 'airremote-air2-source-v1' and manifest.get('name') == VERSION_NAME,
          'Source manifest identity mismatch')
     expected = manifest.get('files')
     need(isinstance(expected, dict) and set(expected) == set(files) - {'source_manifest.json'},
@@ -215,14 +219,15 @@ def verify_installer_pe(data):
     need(len(versions) == 1, 'One version resource required')
     values = version_strings(versions[0])
     need(values.get('CompanyName') == 'Caimankekw', 'Wrapper developer attribution missing')
-    need(values.get('ProductName') == 'Air Remote TTL-C AIR2-P8 Custom Updater', 'Wrapper product identity missing')
+    need(values.get('ProductName') == 'Air Remote TTL-C AIR2-P8-FIX1 Custom Updater', 'Wrapper product identity missing')
     return {'machine': hex(pe['machine']), 'as_invoker': True, 'authenticode_signed': False,
             'developer': 'Caimankekw'}
 
 
 def preflight(args):
     pins = json.loads((HERE / 'input_manifest.json').read_text(encoding='utf-8'))
-    updater = pinned(args.updater.read_bytes(), pins['updater']['sha256'], 'AIR2-P8 updater')
+    need(pins.get('name') == VERSION_NAME, 'Input manifest identity mismatch')
+    updater = pinned(args.updater.read_bytes(), pins['updater']['sha256'], 'AIR2-P8-FIX1 updater')
     original = pinned(args.original.read_bytes(), pins['original']['sha256'], 'original C11 updater')
     source = args.source_archive.read_bytes()
     source_files = validate_source_archive(source, args.source_sha256)
@@ -267,15 +272,17 @@ def build_package(args):
     files.update({name: source_files[name] for name in ROOT_DOCS})
     for name in ('README.md', 'README.zh-CN.md'):
         files[name] = (HERE / 'templates' / name).read_bytes()
-    manifest = {'format': 'air2-p8-windows-package-v1', 'developer': 'Caimankekw',
-                'authored_source_license': 'AGPL-3.0-only', 'firmware_unchanged': True,
+    manifest = {'format': 'air2-p8-windows-package-v1', 'name': VERSION_NAME,
+                'release_date': RELEASE_DATE, 'release_tag': RELEASE_TAG, 'developer': 'Caimankekw',
+                'authored_source_license': 'AGPL-3.0-only', 'firmware_unchanged_by_packaging': True,
+                'expected_firmware_image_sha256': pins['firmware']['sha256'],
                 'updater_sha256': sha(updater), 'original_sha256': sha(original),
                 'source_archive_sha256': sha(source), 'source_tree_sha256': sha(source_files['source_manifest.json']),
                 'builder_sha256': sha(Path(__file__).read_bytes()),
                 'nsis_script_sha256': sha((HERE / 'installer.nsi').read_bytes()),
                 'input_manifest_sha256': sha((HERE / 'input_manifest.json').read_bytes()),
                 'files': {name: record(blob) for name, blob in sorted(files.items())},
-                'hardware_validated_by_packaging': False}
+                'hardware_validated_by_packaging': False, 'fix1_hardware_validated': False}
     files['package_manifest.json'] = encoded(manifest)
     files['SHA256SUMS.txt'] = ''.join(sha(blob) + '  ' + name + '\n'
                                     for name, blob in sorted(files.items())).encode('ascii')
@@ -295,7 +302,7 @@ def build_package(args):
     archive = output / (PACKAGE_NAME + '-Windows-portable.zip')
     with zipfile.ZipFile(archive, 'x', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipped:
         for name, blob in sorted(files.items()):
-            entry = zipfile.ZipInfo(PACKAGE_NAME + '/' + name, (2026, 10, 15, 0, 0, 0))
+            entry = zipfile.ZipInfo(PACKAGE_NAME + '/' + name, (2026, 10, 16, 0, 0, 0))
             entry.compress_type = zipfile.ZIP_DEFLATED
             entry.external_attr = 0o100644 << 16
             zipped.writestr(entry, blob)
@@ -321,7 +328,8 @@ def build_package(args):
              'Private path in installer')
     need(args.updater.read_bytes() == updater and args.original.read_bytes() == original
          and args.source_archive.read_bytes() == source, 'Input changed during packaging')
-    report = {'status': 'PASS_WINDOWS_STATIC_PACKAGE', 'developer': 'Caimankekw',
+    report = {'status': 'PASS_WINDOWS_STATIC_PACKAGE', 'name': VERSION_NAME,
+              'release_date': RELEASE_DATE, 'release_tag': RELEASE_TAG, 'developer': 'Caimankekw',
               'updater': record(updater), 'original': record(original), 'source_archive': record(source),
               'installer': {'name': installer.name, **record(blob)},
               'portable_zip': {'name': archive.name, **record(archive.read_bytes())},
@@ -330,7 +338,8 @@ def build_package(args):
               'portable_zip_roundtrip': True, 'all_input_pins_verified': True,
               'gui_default_launch': False, 'updater_executed': False, 'installer_executed': False,
               'usb_accessed': False, 'drivers_installed': False,
-              'runtime_firmware_modified': False, 'outer_exe_byte_reproducibility_claimed': False}
+              'runtime_firmware_modified': False, 'fix1_hardware_validated': False,
+              'outer_exe_byte_reproducibility_claimed': False}
     write_new(output / 'package_verification.json', encoded(report))
     write_new(output / 'SHA256SUMS.txt', (sha(blob) + '  ' + installer.name + '\n' +
               sha(archive.read_bytes()) + '  ' + archive.name + '\n').encode('ascii'))
