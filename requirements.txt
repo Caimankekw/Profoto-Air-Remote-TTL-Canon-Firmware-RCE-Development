@@ -1,2 +1,2 @@
-# Python >= 3.9. All main-branch inspection tools and tests use the standard library.
-# No pip packages, firmware compiler or Windows packaging tools are required.
+# Python >= 3.9; firmware, source archive and Windows packaging use the standard library.
+# NSIS and 7-Zip are separate Windows build tools; see windows/README.md.

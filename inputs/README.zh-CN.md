@@ -1,12 +1,19 @@
-# 外部原厂输入
+# 原厂构建输入
 
-[English](README.md)
+[English](README.md) | 简体中文
 
-请另行提供原版 **Air-Remote-TTL-C-Firmware-C11.exe**，本仓库不分发该文件。支持的输入：
+请自行提供未经修改的 **Air-Remote-TTL-C-Firmware-C11.exe**，SHA-256 必须为：
 
-- 大小：`3938448` 字节。
-- SHA-256：`e56b19080bd6330a5461dd4e3d614fc6d81dcc533e945e6090e7db63824bc240`。
+```text
+e56b19080bd6330a5461dd4e3d614fc6d81dcc533e945e6090e7db63824bc240
+```
 
-文件名仅作说明，实际以内容指纹为准。使用 `tools/disassemble.py` 的 `--original` 传入路径，可将原文件放在仓库之外。工具只读取数据，从不运行 EXE，也不需要设备、账户、设备读回或 USB 采集。请勿将厂商 EXE、生成固件或个人设备资料提交到 `main`。
+在 P8 仓库根目录执行：
 
-使用方法见[根目录说明](../README.zh-CN.md#分析原-c11)。修改过的输入会被拒绝，不会当作原版 C11 处理。
+```powershell
+python -B build.py --original "inputs\Air-Remote-TTL-C-Firmware-C11.exe"
+```
+
+也可通过 `--original` 指定目录外的文件。构建只将原厂 EXE 作为数据解析，不运行它、不访问 USB。Windows 发布包内未修改的原厂恢复 EXE 可作为该输入。
+
+无需设备备份、个体配置、序列号、登录信息或 USB 采集。不要把原厂 EXE 或生成的固件镜像提交到源码仓库。原创工具采用 AGPL-3.0-only，原厂固件和更新器保留其原有权利，详见根目录 [NOTICE](../NOTICE.md)。

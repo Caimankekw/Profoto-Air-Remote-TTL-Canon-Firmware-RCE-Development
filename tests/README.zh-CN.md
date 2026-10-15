@@ -1,15 +1,18 @@
-# 离线分析工具检查
+# 离线验证
 
-[English](README.md)
+在仓库根目录用 Python 3.9+ 执行；不需要 pip 依赖或连接设备：
 
-在仓库根目录使用 Python 3.9+ 运行，无需第三方包或设备：
-
-```powershell
+```console
 python -I -B tests/test_reference_codec.py -v
-python -I -B tests/test_container.py -v
-python -I -B tests/test_container.py --original "C:\path\to\Air-Remote-TTL-C-Firmware-C11.exe" -v
+python -I -B tests/test_container.py --original "path/to/C11.exe" -v
+python -I -B tests/test_build.py --original "path/to/C11.exe" -v
+python -I -B tests/test_isolated_build.py --original "path/to/C11.exe"
 ```
 
-codec 套件有 7 项测试。container 套件有 9 项纯内存测试及 4 项可选原厂输入测试；未传入 `--original` 时，后 4 项会明确跳过。合成修改仅在内存中进行，不写出或执行 EXE。测试验证解析、输入指纹、格式保留及变换边界，不证明设备启动或射频行为。
+前三组分别覆盖 7 项编码、13 项容器、13 项源码构建与边界测试。没有提供原厂输入时，
+依赖它的测试会明确跳过。最后一组将源码依赖复制到新的临时目录，以 Python `-I`
+运行；文件访问检查禁止读取复制目录、指定原厂 EXE 和 Python 安装目录以外的文件。
+临时测试目录会保留，不自动删除。
 
-[根 README](../README.zh-CN.md) 的反汇编命令用于单独的端到端分析检查。生成列表不应提交到版本库，`main` 不依赖 P8 固件构建或仿真测试套件。
+这些检查验证源码与产物一致性及封装边界，不验证硬件行为。此前 P8 有界仿真验证的是
+同一份冻结镜像；完整历史虚拟机和证据工作区不是构建依赖，本精简源码包不包含它们。

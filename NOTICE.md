@@ -2,22 +2,28 @@
 
 Copyright (C) 2026 Caimankekw.
 
+Repository / 项目仓库: https://github.com/Caimankekw/Profoto-Air-Remote-TTL-Canon-Firmware-RCE-Development
+
+The `P8` branch contains the corresponding authored development source; `main` contains analysis of unmodified C11. Release notes pin the exact commits, and each Windows package includes its corresponding `source.zip`.
+
+`P8` 分支提供对应原创开发源码，`main` 提供原版 C11 逆向材料。Release 说明固定到具体源码提交，每份 Windows 包同时包含对应 `source.zip`。
+
 ## English
 
-Caimankekw's original explanatory text, manually authored pseudocode, analysis tools and tests are licensed under **AGPL-3.0-only**. The complete license is reproduced unchanged in [LICENSE](LICENSE).
+Caimankekw's original patch generators, integration and packaging tools, tests, and explanatory documentation are licensed under **AGPL-3.0-only**. See the complete, unmodified [LICENSE](LICENSE). The corresponding authored source is included in the source archive distributed with the Windows package.
 
-This grant applies only to material the developer has the right to license. Original Profoto firmware, recovered or copied original instructions, firmware resources, the original updater/loader, trademarks and other third-party material retain their respective rights. Describing recovered behavior or distributing derived transform parameters does not grant additional rights to the original software or claim that it has been fully reconstructed as source.
+This grant applies only to material for which the developer can grant rights. Original Profoto firmware, copied or relocated original instructions, firmware resources, the original updater and loader, trademarks, and other third-party material retain their respective rights. Recovered logic and reference parameters document observations of that firmware; including them does not grant additional rights to the original software. The mixed generated firmware/updater is not represented as wholly authored by Caimankekw or wholly relicensed under AGPL.
 
-`main` excludes vendor executables, firmware images, raw device readbacks, USB captures, individual device settings/identifiers and account data. The original updater is a separately supplied, hash-checked analysis input. The generic modules do not contain the P8 implementation; that experimental development and its packaging belong to the linked P8 branch and releases.
+The source distribution excludes the original vendor EXE, device readbacks, USB captures, individual device configuration/identifiers and account data. The original EXE is a separately supplied, hash-checked build input; the Windows distribution includes an unmodified original recovery EXE. Reusing the vendor GUI or container does not imply approval or a valid vendor signature.
 
-This repository does not represent manufacturer approval or affiliation. No third-party license is replaced by this notice. The project license and disclaimers do not reduce rights granted by applicable open-source licenses or non-excludable statutory rights.
+NSIS, its runtime/plugins and 7-Zip keep their own licenses. The Windows build retains the NSIS copyright/license notice with its distributed runtime; 7-Zip is used as a separately supplied build verification tool. See `windows/` for inputs and packaging source. The project license and disclaimers do not limit rights granted by the applicable open-source licenses or non-excludable statutory rights.
 
 ## 简体中文
 
-Caimankekw 原创说明文字、人工编写的伪代码、分析工具与测试采用 **AGPL-3.0-only**。完整协议按原文保留于 [LICENSE](LICENSE)。
+Caimankekw 原创的补丁生成器、整合与打包工具、测试及解释文档采用 **AGPL-3.0-only**。完整、未经修改的协议见 [LICENSE](LICENSE)。Windows 包附带的源码压缩包提供对应原创源码。
 
-授权仅适用于开发者有权许可的材料。原厂 Profoto 固件、恢复或复制的原指令、固件资源、原更新器/loader、商标与其他第三方材料保留各自权利。说明恢复行为或提供派生变换参数，不授予额外原厂软件权利，也不宣称已将其全部恢复为源码。
+授权仅涵盖开发者有权许可的内容。原厂 Profoto 固件、复制或重定位的原始指令、固件资源、原厂更新器和 loader、商标及其他第三方材料保留各自权利。恢复逻辑和参考参数记录对固件的观察，收录它们不授予额外原厂软件权利。生成的混合固件和更新器不宣称全部由 Caimankekw 创作或已整体改为 AGPL。
 
-`main` 不含厂商 EXE、固件镜像、原始设备读回、USB 采集、设备个体配置/身份或账户资料。原更新器是使用者另行提供并经哈希核验的分析输入。通用模块不含 P8 实现；实验开发及其封包属于所链接的 P8 分支与 Releases。
+源码包不包含原厂 EXE、设备读回、USB 采集、设备个体配置/身份或账号资料。原厂 EXE 是用户单独提供并经哈希核验的构建输入；Windows 包附带未修改的原厂恢复 EXE。沿用原厂 GUI 或容器不代表原厂认可或具有有效原厂签名。
 
-本仓库不代表厂商认可或关联，不替换任何第三方许可。项目许可与免责声明不缩减适用开源协议或法律不可排除权利。
+NSIS、其运行组件/插件及 7-Zip 保留各自许可。Windows 包随 NSIS 运行组件保留其版权/许可说明；7-Zip 作为用户另备的构建验证工具。输入要求及打包源码见 `windows/`。本项目协议和免责声明不缩减适用开源协议授予的权利或法律不得排除的权利。

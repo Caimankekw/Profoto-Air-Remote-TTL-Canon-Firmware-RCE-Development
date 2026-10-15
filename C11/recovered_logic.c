@@ -4,11 +4,11 @@
  * MANUALLY AUTHORED REVERSE-ENGINEERING EXPLANATION -- NOT VENDOR SOURCE.
  * This is a partial, non-buildable model of selected ORIGINAL C11 behavior.
  * It omits register/stack ABI, peripheral setup and many error/cleanup paths.
- * It is not a replacement firmware or a complete recovered program.
+ * It is neither the P8 implementation nor a replacement firmware.
  * Manufacturer machine code/resources retain their respective rights.
  * Addresses below are PIC18 BYTE addresses; recovered image base = 0x4000.
  */
-#error "Documentation only: this partial model is not compilable firmware."
+#error "Documentation only: use the project patch generators, not this C model."
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -160,4 +160,15 @@ static const struct function_note original_function_index[] = {
  * It is not a background autosave scan. Do not call8F38 as an edit-time save:
  * it continues into shutdown. Channel is separately requested through the
  * radio RSGER0/RSGEW path; the packed C[6] field is not identified as channel.
+ */
+
+/* PROJECT ADDITIONS -- NOT ORIGINAL C11:
+ * HSS-P3 baseline patches sample lifetime/B4 energy preparation and retains
+ * the native UART/GPIO backend. P8 preserves it; it is not a full RF port.
+ * P8 adds six canonical manual targets, relative/FEC separation, C+HEAD and
+ * C+MODEL arbitration, page display, mapped sender and separate extension
+ * settings pagesF800..FFFF. New instruction code is generated belowF800.
+ * Original67..6E pending transactions are drained; the six-group direct send
+ * path does not reproduce the whole original prequery/fallback transaction.
+ * Build ../source/ with the project tooling; do not compile this document.
  */

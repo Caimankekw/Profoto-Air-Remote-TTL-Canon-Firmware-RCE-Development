@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copyright (C) 2026 Caimankekw
+# Python 3.9+ standard library only. NSIS and 7-Zip are explicit external inputs.

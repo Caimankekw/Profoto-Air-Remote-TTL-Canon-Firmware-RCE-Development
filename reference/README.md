@@ -1,16 +1,14 @@
-# C11 address-transform reference
+# C11 address-transformation reference data
 
-[简体中文](README.zh-CN.md) | Developer: Caimankekw
+English | [简体中文](README.zh-CN.md)
 
-`c11_offset_transform.bin` contains derived byte-transform parameters for offline inspection of the original C11 updater. It contains no device serial number, USB path, original transaction log, device backup or vendor plaintext image. Original firmware and updater rights remain with their respective holders; see [NOTICE](../NOTICE.md).
+Developer: Caimankekw. Authored tool source uses AGPL-3.0-only.
 
-The supported PIC18 byte-address interval is exactly `[0x4002, 0x10000)`. The **73,725-byte** table comprises **49,150 XOR bytes** followed by **24,575 packed mask bytes**. The low nibble describes the lower address; the high nibble describes the next address. There is no file header. `codec_manifest.json` and tool constants pin the format, range and SHA-256:
+`c11_offset_transform.bin` contains address-specific transformation parameters recovered from protocol behavior. It contains no device serial number, batch, date, USB path, device program backup, or original program plaintext. Offline tools use it to convert between C11 updater transport bytes and MCU bytes. Original firmware and updater rights remain with their respective owners.
 
-```text
-7779d34181f9d302d2d122e9a2ed40f975a4128b738a40561f97fc86ac949303
-```
+The supported MCU byte-address interval is strictly `[0x4002, 0x10000)`. The 73,725-byte file contains 49,150 XOR bytes followed by 24,575 packed mask bytes. The low nibble belongs to the lower address and the high nibble to the next address. There is no file header; `codec_manifest.json` and tool constants pin the range, format and SHA-256.
 
-For plaintext byte `p`, XOR key `k` and four-bit mask `m`:
+For plaintext byte `p`, XOR byte `k`, and four-bit mask `m`:
 
 ```text
 t = (p XOR (p >> 4)) AND m AND 0x0F
@@ -19,10 +17,10 @@ encode(p) = swap(p, m) XOR k
 decode(c) = swap(c XOR k, m)
 ```
 
-The transform never moves addresses. Each mask bit exchanges two bits four positions apart, making `swap` its own inverse. The parameters were derived from fixed fill/instruction references; their raw transactions and device metadata are not distributed.
+Addresses do not move. Each mask bit selects a pair of bits four positions apart in the same byte; the swap is its own inverse. The mapping was recovered using fixed-fill and fixed-instruction-word references. Device information and raw transactions from those reference reads are not distributed.
 
-`tools/reference_codec.py` uses only the Python standard library. Its generic in-memory `encode`, `decode` and `encode_patch` methods reject out-of-range requests. Those methods are not an updater or a P8 patch implementation.
+`tools/reference_codec.py` uses only Python's standard library. `ReferenceCodec().encode(address, plaintext)`, `decode(address, opaque)`, and `encode_patch(address, plaintext)` reject out-of-range requests.
 
-`decode_original_bytes()` accepts only the pinned original C11 application transport region. It returns a 113,664-byte analysis representation based at `0x4000`, plus a known-byte mask. Bytes `0x4000–0x4001` remain unknown: zero placeholders with a zero mask, not recovered instructions. The fixed original's confirmed `FF` tail at `[0x10000, 0x1FC00)` is reconstructed only after the complete original transport hash matches; no general decoder for that tail or boot/config region is claimed. This analysis representation must not be treated as a directly flashable file.
+`decode_original_bytes()` accepts only the SHA-256-pinned complete original C11 application transport region. It returns a 113,664-byte partial plaintext image based at `0x4000` and a known-byte mask. Plaintext bytes `0x4000–0x4001` remain unknown and are represented by zeros with mask zero; these zeros must not be flashed as real instructions. The confirmed FF fill at `0x10000–0x1FBFF` is supplied only after the complete original transport hash matches. This does not establish a generic encoder for that tail. Any rebuilt container must preserve the original opaque first word, tail, sparse gaps and configuration bytes.
 
-`codec_equivalence.json` retains prior per-address equivalence and original-image/mask hash evidence. It is evidence metadata, not an additional runtime dependency. The self-contained [tests](../tests/README.md) check the table and transform without a device or vendor EXE; these checks do not establish hardware, radio or optical behavior.
+`codec_equivalence.json` records comparison with the original workspace decoder at every address and the C11 plaintext/mask hash checks. Run `python -B -m unittest discover -s tests -p test_reference_codec.py` for a self-test that does not require the vendor EXE. Reference equivalence does not validate device boot, RF delivery or light behavior.

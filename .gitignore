@@ -6,7 +6,4 @@ dist/
 inputs/*
 !inputs/README.md
 !inputs/README.zh-CN.md
-*.exe
-*.hex
-*.zip
-*.partial.bin
+source_manifest.json

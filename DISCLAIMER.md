@@ -1,13 +1,27 @@
-# Research and experimental-development disclaimer
+# AIR2-P8 experimental firmware disclaimer
 
-[简体中文](DISCLAIMER.zh-CN.md) | Developer: Caimankekw
+English | [简体中文](DISCLAIMER.zh-CN.md)
 
-This independent project documents selected original Air Remote TTL-C C11 behavior and links to experimental AIR2-P8 development. It is not an official Profoto release or an endorsed reconstruction of manufacturer source code.
+Developer: Caimankekw. Scope: Air Remote TTL-C C11 AIR2-P8, its update packages
+and development tools.
 
-`main` contains offline inspection material, with no flashable image or device-writing tool. Its documented command reads a separately supplied EXE as data; it does not run that updater. Notes, pseudocode, address labels and candidate listings can be incomplete. They are not a complete firmware specification or proof that code is safe to execute on a device.
+**This is an unofficial experimental modification. Flashing or using it may cause
+startup failure, corrupted settings, synchronization or exposure errors, failed
+shoots or other losses, and may require recovery, repair or replacement.** Complete
+device compatibility, RF timing and optical behavior have not been validated.
+Connect Pro feature or performance equivalence is not guaranteed.
 
-The separate P8 modification is experimental. Flashing or using modified firmware can cause startup failure, corrupted settings, synchronization/exposure errors or other loss and may require recovery, repair or replacement. Full device compatibility, RF timing and optical behavior have not been validated; Connect Pro equivalence is not guaranteed. Consult the matching P8 documentation before using a development release.
+Offline tests, codec roundtrips, hashes and updater success screens establish only
+their respective checked results. They do not guarantee successful startup, all
+functions, reliability or recoverability. No complete device backup is automatically
+created. Including an original updater does not guarantee recovery after a failure.
 
-Offline tests, hashes, parser roundtrips and update success messages prove only their checked properties. They do not guarantee hardware behavior, reliable operation or recovery. A supplied original updater is not a complete device backup and does not guarantee restoration after every failure.
+Reusing manufacturer interfaces, assets or formats does not imply an official
+release, endorsement or signature. Rights in Profoto's original firmware, tools,
+trademarks and third-party materials remain with their respective holders; this
+project does not grant additional rights in those materials.
 
-Manufacturer software, resources and trademarks retain their respective rights. Reusing a format does not imply a valid vendor signature, approval or affiliation. Authored material is provided under [AGPL-3.0-only](LICENSE), including its applicable warranty and liability provisions. This notice does not amend the license or exclude rights or liabilities that applicable law does not permit to be excluded. See [NOTICE](NOTICE.md).
+Authored code and documentation are provided under AGPL-3.0-only in [LICENSE](LICENSE),
+including its applicable warranty disclaimer and liability provisions. Rights and
+liabilities that applicable law does not permit to be excluded remain preserved.
+This notice does not amend or reduce rights granted by the license. See [NOTICE.md](NOTICE.md).

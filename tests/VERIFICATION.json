@@ -1,0 +1,78 @@
+{
+  "status": "PASS_STANDALONE_RELEASE_REPRODUCTION",
+  "developer": "Caimankekw",
+  "suites": {
+    "test_reference_codec.py": {
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "source_sha256": "7e991909f5a2d5fcb31d93e8b5274814bf43f1ef36558922ac410c4c17af386b"
+    },
+    "test_container.py": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "source_sha256": "20ae335b1117db4d61dbbb45aff472106bac1cefdd95d13bbdd4986da35ac679"
+    },
+    "test_build.py": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "source_sha256": "e7af0708e958928fe44a1771bf49c85035c8d5f7a8e643e2830347273c9b4723"
+    }
+  },
+  "test_cases_passed": 33,
+  "isolated_build": {
+    "status": "PASS_ISOLATED_SOURCE_BUILD",
+    "python_isolated_flag": true,
+    "file_access_guard_active": true,
+    "workspace_dependency": false,
+    "image_sha256": "337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185",
+    "exe_sha256": "dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1",
+    "external_inputs": [
+      "explicit official C11 EXE"
+    ],
+    "copied_files": [
+      "build.py",
+      "reference/README.md",
+      "reference/README.zh-CN.md",
+      "reference/c11_offset_transform.bin",
+      "reference/codec_equivalence.json",
+      "reference/codec_manifest.json",
+      "source/PROVENANCE.json",
+      "source/README.md",
+      "source/README.zh-CN.md",
+      "source/hss_patch.py",
+      "source/linker.py",
+      "source/persistence_patch.py",
+      "source/radio_patch.py",
+      "source/ui_patch.py",
+      "tools/container.py",
+      "tools/disassemble.py",
+      "tools/firmware.py",
+      "tools/package_source.py",
+      "tools/pic18_listing.py",
+      "tools/rebuild_windows.py",
+      "tools/reference_codec.py"
+    ],
+    "device_accessed": false,
+    "scratch_retained": true
+  },
+  "source_build_image_sha256": "337120c7ed51954f4cdf0e60816e0289583a3c6b4ad400504d0cbef0a259f185",
+  "source_build_exe_sha256": "dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1",
+  "source_build_hex_sha256": "8c86f3583745187586481221379342e5baf1733412b44186cba60459921b0640",
+  "device_accessed": false,
+  "new_hardware_test_performed": false,
+  "original_executable_used_as_data_only": true,
+  "build_manifest_sha256": "b420f435a6f792ca5a85fb77857011c3946dcca4924bc76b09b12fbcef4b41f3",
+  "builder_sha256": "db12d055e660058512f3f2c8b1795b485d05b924d510ccd8df66e6b90e17bb0f",
+  "isolation_test_source_sha256": "0e85e53008dc1b9e8734b7ddbd86a8f1da4bacf3f5afe50db0255145564274c4",
+  "note": "The 33 tests and isolated source build verify this portable build toolchain; prior P8 behavior tests are separate evidence for the identical image.",
+  "authored_source_license": "AGPL-3.0-only",
+  "license_scope": "Authored build/test sources only; this verification report does not relicense vendor firmware or updater bytes.",
+  "license_scope_correction_artifacts_unchanged": true,
+  "linker_source_sha256": "c7a8fdb48fb66ee29e9a0dbcdbf4de93f0b546e9e3d112876ecdcf7f9b74ff45",
+  "publication_repository": "Caimankekw/Profoto-Air-Remote-TTL-Canon-Firmware-RCE-Development",
+  "publication_branch": "P8",
+  "publication_runtime_unchanged": true
+}

@@ -1,0 +1,18 @@
+{
+  "format": "air2-p8-windows-inputs-v1",
+  "updater": {"sha256": "dec0660b9568713d36a13e44909741b2891d30680895f0ef3406a31e9cbebde1"},
+  "original": {"sha256": "e56b19080bd6330a5461dd4e3d614fc6d81dcc533e945e6090e7db63824bc240"},
+  "nsis": {
+    "version": "3.13",
+    "tree_files": 441,
+    "tree_sha256": "f84b8de354a2e9b5933de86bfe863fe2ad66119473e4cb24bdf151e81be5b853",
+    "tree_algorithm": "SHA256 of ASCII JSON with sort_keys=true and separators=(',',':'), mapping relative POSIX file paths to {size,sha256}; all regular files in the complete unmodified NSIS directory",
+    "copying_sha256": "388357c1215ff403c5ebde3a5ecd273e68f8b79a579996775245d1ee65442aba"
+  },
+  "seven_zip": {
+    "version": "26.04 x64",
+    "7z.exe": "95fff19b73eff77c87c0d7bd32822e43fb90dd2932459f962eb532d8dfb6ba53",
+    "7z.dll": "899cd73d7fc60e1c1c35c7de0f5bed3dc69bfe2cecbd48014d868a347970a0b1"
+  },
+  "source_archive": "Explicit --source-sha256 pin required; one AirRemote_TTL_C_AIR2_P8/ root with source_manifest.json describing every other file"
+}
